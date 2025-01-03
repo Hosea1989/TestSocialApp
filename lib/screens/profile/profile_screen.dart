@@ -91,25 +91,21 @@ class ProfileScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const AchievementsScreen()),
         );
-        break;
       case 'Game History':
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const GameHistoryScreen()),
         );
-        break;
       case 'Settings':
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const SettingsScreen()),
         );
-        break;
       case 'Help & Support':
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const SupportScreen()),
         );
-        break;
     }
   }
 } 

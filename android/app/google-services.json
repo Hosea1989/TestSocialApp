@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "275631894721",
+    "project_id": "testgamingsocial-ffe04",
+    "storage_bucket": "testgamingsocial-ffe04.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275631894721:android:668cc0fb86f4855bf6a440",
+        "android_client_info": {
+          "package_name": "com.testsocialapp.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vyYtYK0rNalAR7uo_yl8Pzmcmx4tOCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

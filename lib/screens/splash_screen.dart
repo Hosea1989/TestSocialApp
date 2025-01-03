@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'auth/login_screen.dart';
+import '../services/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,18 +14,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      // TODO: Check if user is logged in
-      bool isLoggedIn = false; // Replace with actual auth check
+    Future.delayed(const Duration(seconds: 3), () async {
+      final authService = AuthService();
+      final isLoggedIn = await authService.isLoggedIn();
       
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => isLoggedIn 
-            ? const HomePage() 
-            : const LoginScreen(),
-        ),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => isLoggedIn ? const HomePage() : const LoginScreen(),
+          ),
+        );
+      }
     });
   }
 

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../home_screen.dart';
 import 'login_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../services/auth_service.dart';
+import '../../models/user_model.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -16,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +109,17 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _handleSignup,
+                  onPressed: _isLoading ? null : _handleSignup,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.neonGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
+                  child: _isLoading 
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
@@ -135,13 +142,47 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void _handleSignup() {
+  void _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement actual signup logic
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      setState(() {
+        _isLoading = true;
+      });
+      
+      try {
+        final userCredential = await _authService.registerWithEmailAndPassword(
+          _emailController.text,
+          _passwordController.text,
+        );
+
+        // Create user document in Firestore
+        final user = UserModel(
+          uid: userCredential.user!.uid,
+          username: _usernameController.text,
+          email: _emailController.text,
+        );
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .set(user.toMap());
+
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 
