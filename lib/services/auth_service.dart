@@ -52,4 +52,16 @@ class AuthService {
   Future<bool> isLoggedIn() async {
     return _auth.currentUser != null;
   }
+
+  Future<UserCredential> createAccount(String email, String password) async {
+    try {
+      return await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      print('Error creating account: $e');
+      rethrow;
+    }
+  }
 } 

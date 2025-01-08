@@ -46,10 +46,10 @@ class GameDetails extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Icon(Icons.star, color: AppTheme.neonGreen),
-                          const Text('4.5'),
+                          Text('4.5'),
                         ],
                       ),
                     ],
@@ -59,7 +59,7 @@ class GameDetails extends StatelessWidget {
                   // Upload video section
                   Card(
                     child: ListTile(
-                      leading: Icon(Icons.video_call, color: AppTheme.neonGreen),
+                      leading: const Icon(Icons.video_call, color: AppTheme.neonGreen),
                       title: const Text('Upload Gameplay'),
                       subtitle: const Text('Share your gaming moments'),
                       onTap: () {
@@ -121,7 +121,7 @@ class GameDetails extends StatelessWidget {
           children: [
             Text(
               price,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.neonGreen,
                 fontWeight: FontWeight.bold,
               ),

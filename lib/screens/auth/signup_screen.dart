@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../home_screen.dart';
 import 'login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../services/auth_service.dart';
 import '../../models/user_model.dart';
+import 'onboarding_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -34,7 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 48),
-                Icon(
+                const Icon(
                   Icons.games,
                   size: 80,
                   color: AppTheme.neonGreen,
@@ -129,7 +129,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Already have an account? Login',
                     style: TextStyle(color: AppTheme.neonGreen),
                   ),
@@ -144,44 +144,31 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      
       try {
-        final userCredential = await _authService.registerWithEmailAndPassword(
-          _emailController.text,
+        setState(() => _isLoading = true);
+        final credential = await _authService.createAccount(
+          _emailController.text.trim(),
           _passwordController.text,
         );
-
-        // Create user document in Firestore
-        final user = UserModel(
-          uid: userCredential.user!.uid,
-          username: _usernameController.text,
-          email: _emailController.text,
-        );
-
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .set(user.toMap());
-
+        
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(
+              builder: (context) => OnboardingScreen(
+                userId: credential.user!.uid,
+                email: _emailController.text.trim(),
+              ),
+            ),
           );
         }
       } catch (e) {
+        print('Detailed error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text('Error: $e')),
         );
       } finally {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
+        if (mounted) setState(() => _isLoading = false);
       }
     }
   }

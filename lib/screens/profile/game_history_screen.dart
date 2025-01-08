@@ -27,16 +27,16 @@ class GameHistoryScreen extends StatelessWidget {
                 ),
               ),
               title: const Text('Game Title'),
-              subtitle: Column(
+              subtitle: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Last played: 2 hours ago'),
-                  const SizedBox(height: 4),
+                  Text('Last played: 2 hours ago'),
+                  SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(Icons.timer, size: 16, color: AppTheme.neonGreen),
-                      const SizedBox(width: 4),
-                      const Text('Total: 48h'),
+                      SizedBox(width: 4),
+                      Text('Total: 48h'),
                     ],
                   ),
                 ],

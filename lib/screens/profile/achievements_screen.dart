@@ -17,7 +17,7 @@ class AchievementsScreen extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             child: ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.emoji_events,
                 color: AppTheme.neonGreen,
                 size: 32,

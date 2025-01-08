@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 48),
-                Icon(
+                const Icon(
                   Icons.games,
                   size: 80,
                   color: AppTheme.neonGreen,
@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => const SignupScreen()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Don\'t have an account? Sign Up',
                     style: TextStyle(color: AppTheme.neonGreen),
                   ),

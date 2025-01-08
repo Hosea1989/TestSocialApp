@@ -1,5 +1,8 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+platform :ios, '16.0'
+
+# Add this at the top
+$FirebaseSDKVersion = '10.25.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -35,10 +38,21 @@ target 'Runner' do
   target 'RunnerTests' do
     inherit! :search_paths
   end
-end
 
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      flutter_additional_ios_build_settings(target)
+      
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+        
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+          '$(inherited)',
+          'LEVELDB_IS_BIG_ENDIAN=0',
+          'LEVELDB_PLATFORM_POSIX=1',
+          'SQLITE_HAS_CODEC=1'
+        ]
+      end
+    end
   end
 end
